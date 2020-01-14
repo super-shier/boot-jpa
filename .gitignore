@@ -32,3 +32,4 @@ build/
 /jpa.*.log
 /src/test/java/com/shier/common/boot/jpa/MySqlEncryption.java
 /config/
+/data/
