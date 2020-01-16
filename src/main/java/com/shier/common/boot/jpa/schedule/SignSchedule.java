@@ -1,10 +1,8 @@
 package com.shier.common.boot.jpa.schedule;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.shier.common.boot.jpa.common.utils.DateUtil;
-import com.shier.common.boot.jpa.common.utils.HttpUtil;
 import com.shier.common.boot.jpa.service.MailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +12,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
 import static com.shier.common.boot.jpa.common.utils.DateUtil.DateTimeToStr;
 
@@ -51,35 +51,11 @@ public class SignSchedule {
      */
     @Value("${mail.send.to.users}")
     private String mailSendToUsers;
-    @Value("${fula.sign.in.app.id}")
-    private String fulaSignInAppId;
-    @Value("fula.sign.in.token")
-    private String fulaSignInToken;
-    @Value("fula.sign.in.url")
-    private String fulaSignInUrl;
 
     //每隔 5000 毫秒执行一次
     @Scheduled(fixedRate = 3600000)
     public void reportCurrentTime() {
         logger.info("每隔小时执行一次,当前时间为time:{}", DateTimeToStr(new Date()));
-    }
-
-    //每天凌晨5点签到
-    @Scheduled(cron = "0 0 5 * * ?")
-    public void fixTimeExecution() {
-        logger.info("*********签到当前时间为time:{}", DateTimeToStr(new Date()));
-        JSONObject body = new JSONObject();
-        body.put("isSignIn", 1);
-        body.put("origin", 4);
-        Map<String, String> headers = new HashMap<>();
-        headers.put("appId", fulaSignInAppId);
-        headers.put("token", fulaSignInToken);
-        try {
-            logger.info("******sign result:{}", HttpUtil.put(fulaSignInUrl, body.toJSONString(), headers));
-        } catch (Exception e) {
-            logger.info("******topic.sign Exception Msg:{}", e.getMessage());
-        }
-        logger.info("*********签到当前时间为time:{}", DateTimeToStr(new Date()));
     }
 
     /**
