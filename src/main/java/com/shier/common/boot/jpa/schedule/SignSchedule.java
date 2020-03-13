@@ -128,7 +128,8 @@ public class SignSchedule {
     }
 
     private boolean stopDay() {
+        Date now = new Date();
         List<String> stopDays = JSON.parseArray(mailSendStopDays, String.class);
-        return !CollectionUtils.isEmpty(stopDays) && stopDays.contains(DateUtil.DateToStr(new Date()));
+        return DateUtil.isWeekend(now) || (!CollectionUtils.isEmpty(stopDays) && stopDays.contains(DateUtil.DateToStr(now)));
     }
 }
