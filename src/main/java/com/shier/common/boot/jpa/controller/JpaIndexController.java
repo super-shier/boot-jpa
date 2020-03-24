@@ -8,10 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author: liyunbiao
@@ -26,9 +23,9 @@ public class JpaIndexController extends BaseController {
 
     @GetMapping(value = "/hello")
     @ApiOperation(value = "hello页面")
-    public ApiResponse index() {
+    public ApiResponse index(String departmentParam, @RequestAttribute("department") String departmentAttribute) {
         String name = ChineseUtils.toPinyin("李云标", PinyinFormat.ABBR_PINYIN_FORMAT);
-        logger.info("**********hello页面name:{}", name);
+        logger.info("**********hello页面name:{},departmentParam:{},departmentAttribute:{}", name, departmentParam, departmentAttribute);
         return buildResponse("hello页面");
     }
 

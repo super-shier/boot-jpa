@@ -34,7 +34,8 @@ public class MyRequestWrapper extends HttpServletRequestWrapper {
             requestBody.put("department", "department-body");
         }
         Map<String, String[]> requestParams = new HashMap<>(request.getParameterMap());
-        requestParams.put("department", new String[]{"========>department"});
+        requestParams.put("department", new String[]{"department-param"});
+        request.setAttribute("department", "department-attribute");
         this.body = Objects.nonNull(requestBody) ? requestBody.toJSONString() : null;
         this.params.putAll(requestParams);
     }
