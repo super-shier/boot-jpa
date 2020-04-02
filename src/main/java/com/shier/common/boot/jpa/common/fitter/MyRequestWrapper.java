@@ -1,7 +1,5 @@
 package com.shier.common.boot.jpa.common.fitter;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.shier.common.boot.jpa.common.utils.AbstractRequestUtils;
 
 import javax.servlet.ReadListener;
@@ -12,9 +10,6 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * @Author: liyunbiao
@@ -25,19 +20,10 @@ public class MyRequestWrapper extends HttpServletRequestWrapper {
 
     private final String body;
 
-    private Map<String, String[]> params = new HashMap<>();
 
     public MyRequestWrapper(HttpServletRequest request) throws IOException {
         super(request);
-        JSONObject requestBody = JSON.parseObject(AbstractRequestUtils.getRequestBody(request));
-        if (Objects.nonNull(requestBody)) {
-            requestBody.put("department", "department-body");
-        }
-        Map<String, String[]> requestParams = new HashMap<>(request.getParameterMap());
-        requestParams.put("department", new String[]{"department-param"});
-        request.setAttribute("department", "department-attribute");
-        this.body = Objects.nonNull(requestBody) ? requestBody.toJSONString() : null;
-        this.params.putAll(requestParams);
+        this.body = AbstractRequestUtils.getRequestBody(request);
     }
 
     public String getBody() {
@@ -62,6 +48,7 @@ public class MyRequestWrapper extends HttpServletRequestWrapper {
 
             @Override
             public void setReadListener(ReadListener readListener) {
+
             }
 
             @Override
@@ -76,19 +63,5 @@ public class MyRequestWrapper extends HttpServletRequestWrapper {
         return new BufferedReader(new InputStreamReader(this.getInputStream()));
     }
 
-    @Override
-    public String getParameter(String name) {
-        //重写getParameter，代表参数从当前类中的map获取
-        String[] values = params.get(name);
-        if (values == null || values.length == 0) {
-            return null;
-        }
-        return values[0];
-    }
-
-    @Override
-    public String[] getParameterValues(String name) {//同上
-        return params.get(name);
-    }
 
 }
