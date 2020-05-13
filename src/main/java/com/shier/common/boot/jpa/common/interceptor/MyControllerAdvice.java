@@ -112,9 +112,9 @@ public class MyControllerAdvice extends ResponseEntityExceptionHandler {
     private ApiResponse buildResponse(String code, String errorMsg) {
         ErrorCode enumErrCode = ErrorCode.find(String.valueOf(code));
         if (Objects.nonNull(enumErrCode)) {
-            return new ApiResponse(enumErrCode,null);
+            return new ApiResponse(enumErrCode, null);
         } else {
-            return new ApiResponse(String.valueOf(code), errorMsg);
+            return new ApiResponse(String.valueOf(code), errorMsg, null);
         }
     }
 
